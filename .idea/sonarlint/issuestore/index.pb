@@ -1,10 +1,6 @@
 
 7
 pom.xml,4/4/442292b8a7efeabbe4cc176709b833b1792140ec
-Ö
-Usrc/main/java/br/com/fiap/postech/fastfoodproducao/presentation/dto/PedidoRecord.java,b/1/b16b7b896c4545ebc2633c306920641b6e630a6d
-Ü
-Vsrc/main/java/br/com/fiap/postech/fastfoodproducao/presentation/dto/ProdutoRecord.java,c/4/c4f982833f5e8c05cb4a8f3100d756bafb9ae748
 å
 \src/main/java/br/com/fiap/postech/fastfoodproducao/presentation/consumer/PedidoConsumer.java,8/3/83f9d2b8def2b1349b0ca141eeeb366227aeee13
 :
@@ -20,12 +16,6 @@ x
 Hsrc/main/java/br/com/fiap/postech/fastfoodproducao/dto/PedidoRecord.java,5/7/576f3a0e1ae9a8268c10130c50efd01490778d1c
 ê
 `src/main/java/br/com/fiap/postech/fastfoodproducao/presentation/controller/PedidoController.java,0/4/04315126c0002d254cc9d50d4a71654a02c63d92
-Å
-Qsrc/main/java/br/com/fiap/postech/fastfoodproducao/application/PedidoService.java,4/b/4bed011a865df3dd3742199fc33853bb4b7150f0
-z
-Jsrc/main/java/br/com/fiap/postech/fastfoodproducao/model/StatusPedido.java,5/0/507ff168cf21bcb712739efb34503f2f56e83406
-y
-Isrc/main/java/br/com/fiap/postech/fastfoodproducao/model/StatusState.java,a/7/a7798811e6ba552f9c57ef00a0aad8d1556d5ed3
 Ä
 Psrc/main/java/br/com/fiap/postech/fastfoodproducao/application/StatusPedido.java,7/b/7b7e707642a2020c48ba0ccc11029d7521222871
 â
