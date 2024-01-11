@@ -15,7 +15,7 @@ public class PedidoEntity {
     @Id
     private String idObject;
 
-    private String id;
+    private UUID id;
 
     private List<ProdutoEntity> produtos;
 

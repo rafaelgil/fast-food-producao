@@ -1,13 +1,12 @@
 package br.com.fiap.postech.fastfoodproducao.application.service;
 
-import br.com.fiap.postech.fastfoodproducao.data.entity.PedidoEntity;
 import br.com.fiap.postech.fastfoodproducao.data.repository.PedidoRepository;
 import br.com.fiap.postech.fastfoodproducao.dto.PedidoRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -24,6 +23,15 @@ public class PedidoServiceImpl implements PedidoService{
 
     @Override
     public PedidoRecord consultaPedido(UUID id) {
+        if (Objects.isNull(id)) {
+            return null;
+        }
+        var pedidoEntity = pedidoRepository.findByIdPedido(id);
+
+        if (Objects.nonNull(pedidoEntity)) {
+            return new PedidoRecord(pedidoEntity.getId(), null, pedidoEntity.getData(), pedidoEntity.getStatus());
+        }
+
         return null;
     }
 
@@ -38,9 +46,10 @@ public class PedidoServiceImpl implements PedidoService{
         var pedidos = pedidosEntity.stream()
                 .map(pedidoEntity ->
                      new PedidoRecord(
-                            UUID.fromString(pedidoEntity.getId()),
+                             pedidoEntity.getId(),
                             null,
-                            pedidoEntity.getData()
+                            pedidoEntity.getData(),
+                             pedidoEntity.getStatus()
                     )
                 )
                 .collect(Collectors.toList());

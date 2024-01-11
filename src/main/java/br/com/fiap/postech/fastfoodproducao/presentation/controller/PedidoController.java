@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("producao")
+@RequestMapping("pedidos")
 public class PedidoController {
 
     @Autowired
@@ -29,6 +29,8 @@ public class PedidoController {
 
     @GetMapping("/{id}")
     public PedidoRecord getPedido(@PathVariable UUID id) {
-        return null;
+
+        var pedido = pedidoService.consultaPedido(id);
+        return pedido;
     }
 }

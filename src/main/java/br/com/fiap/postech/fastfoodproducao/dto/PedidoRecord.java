@@ -7,6 +7,7 @@ import java.util.UUID;
 public record PedidoRecord(
         UUID id,
         List<ProdutoRecord> produtos,
-        String dataRecebimento
+        String dataRecebimento,
+        String status
 ) {
 }
