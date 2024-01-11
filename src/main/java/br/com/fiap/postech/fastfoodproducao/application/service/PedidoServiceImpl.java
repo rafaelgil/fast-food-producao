@@ -58,6 +58,22 @@ public class PedidoServiceImpl implements PedidoService{
         return pedidos;
     }
 
+    public List<PedidoRecord> listaPedidosPorStatus(String status) {
+        var pedidosEntity = pedidoRepository.findByStatus(status);
+        var pedidos = pedidosEntity.stream()
+                .map(pedidoEntity ->
+                        new PedidoRecord(
+                                pedidoEntity.getId(),
+                                null,
+                                pedidoEntity.getData(),
+                                pedidoEntity.getStatus()
+                        )
+                )
+                .collect(Collectors.toList());
+
+        return pedidos;
+    }
+
     @Override
     public PedidoRecord enviaStatusPedido(UUID id) {
         return null;

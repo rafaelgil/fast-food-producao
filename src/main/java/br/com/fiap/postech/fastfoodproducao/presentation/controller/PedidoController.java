@@ -33,4 +33,13 @@ public class PedidoController {
         var pedido = pedidoService.consultaPedido(id);
         return pedido;
     }
+
+    @GetMapping
+    @RequestMapping("/status/{status}")
+    public List<PedidoRecord> getPedidosByStatus() {
+
+        var pedidos = pedidoService.listaPedidos();
+
+        return pedidos;
+    }
 }

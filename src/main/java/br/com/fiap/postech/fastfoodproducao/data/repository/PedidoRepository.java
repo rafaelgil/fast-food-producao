@@ -13,4 +13,7 @@ public interface PedidoRepository extends MongoRepository<PedidoEntity, UUID> {
 
     @Query("{id:'?0'}")
     PedidoEntity findByIdPedido(UUID id);
+
+    @Query("{status:'?0'}")
+    List<PedidoEntity> findByStatus(String status);
 }
