@@ -1,9 +1,12 @@
 package br.com.fiap.postech.fastfoodproducao.application.service;
 
+import br.com.fiap.postech.fastfoodproducao.application.StatusPedido;
 import br.com.fiap.postech.fastfoodproducao.data.entity.PedidoEntity;
 import br.com.fiap.postech.fastfoodproducao.data.repository.PedidoRepository;
 import br.com.fiap.postech.fastfoodproducao.dto.PedidoRecord;
 import br.com.fiap.postech.fastfoodproducao.presentation.consumer.PedidoConsumer;
+import br.com.fiap.postech.fastfoodproducao.presentation.producer.PedidoProducer;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +24,9 @@ public class PedidoServiceImpl implements PedidoService{
 
     @Autowired
     private PedidoRepository pedidoRepository;
+
+    @Autowired
+    private PedidoProducer pedidoProducer;
 
     @Override
     public void salvaPedido(PedidoRecord pedido) {
@@ -44,7 +50,7 @@ public class PedidoServiceImpl implements PedidoService{
         var pedidoEntity = pedidoRepository.findByIdPedido(id);
 
         if (Objects.nonNull(pedidoEntity)) {
-            return new PedidoRecord(UUID.fromString(pedidoEntity.getId()), null, pedidoEntity.getData(), pedidoEntity.getStatus());
+            return PedidoRecord.fromEntity(pedidoEntity);
         }
 
         return null;
@@ -81,7 +87,15 @@ public class PedidoServiceImpl implements PedidoService{
     }
 
     @Override
-    public PedidoRecord atualizaStatusPedido(UUID id, String status) {
-        return null;
+    public PedidoRecord atualizaStatusPedido(PedidoRecord pedidoRecord, String status) throws JsonProcessingException {
+        var statusPedido = StatusPedido.valueOf(pedidoRecord.status());
+        var novoStatus = statusPedido.avancaPedido();
+        if (novoStatus.name().equals(status)) {
+            pedidoRecord = pedidoRecord.updateStatus(status);
+            pedidoRepository.save(pedidoRecord.toEntity());
+
+            pedidoProducer.send(pedidoRecord);
+        }
+        return pedidoRecord;
     }
 }

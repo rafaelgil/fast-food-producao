@@ -2,6 +2,7 @@ package br.com.fiap.postech.fastfoodproducao.application.service;
 
 import br.com.fiap.postech.fastfoodproducao.data.entity.PedidoEntity;
 import br.com.fiap.postech.fastfoodproducao.dto.PedidoRecord;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,5 +20,5 @@ public interface PedidoService {
 
     PedidoRecord enviaStatusPedido(UUID id);
 
-    PedidoRecord atualizaStatusPedido(UUID id, String status);
+    PedidoRecord atualizaStatusPedido(PedidoRecord pedidoRecord, String status) throws JsonProcessingException;
 }
