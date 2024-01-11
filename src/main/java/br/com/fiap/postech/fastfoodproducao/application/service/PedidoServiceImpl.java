@@ -1,7 +1,11 @@
 package br.com.fiap.postech.fastfoodproducao.application.service;
 
+import br.com.fiap.postech.fastfoodproducao.data.entity.PedidoEntity;
 import br.com.fiap.postech.fastfoodproducao.data.repository.PedidoRepository;
 import br.com.fiap.postech.fastfoodproducao.dto.PedidoRecord;
+import br.com.fiap.postech.fastfoodproducao.presentation.consumer.PedidoConsumer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,12 +17,23 @@ import java.util.stream.Collectors;
 @Service
 public class PedidoServiceImpl implements PedidoService{
 
+    private static final Logger logger = LoggerFactory.getLogger(PedidoServiceImpl.class);
+
     @Autowired
     private PedidoRepository pedidoRepository;
 
     @Override
     public void salvaPedido(PedidoRecord pedido) {
 
+        var pedidoEntity = PedidoEntity.builder()
+                .id(pedido.id().toString())
+                .data(pedido.dataRecebimento())
+                .status(pedido.status())
+                .build();
+
+        pedidoRepository.save(pedidoEntity);
+
+        logger.info("ID Object Pedido: " + pedidoEntity.getIdObject());
     }
 
     @Override
@@ -29,7 +44,7 @@ public class PedidoServiceImpl implements PedidoService{
         var pedidoEntity = pedidoRepository.findByIdPedido(id);
 
         if (Objects.nonNull(pedidoEntity)) {
-            return new PedidoRecord(pedidoEntity.getId(), null, pedidoEntity.getData(), pedidoEntity.getStatus());
+            return new PedidoRecord(UUID.fromString(pedidoEntity.getId()), null, pedidoEntity.getData(), pedidoEntity.getStatus());
         }
 
         return null;
@@ -44,14 +59,7 @@ public class PedidoServiceImpl implements PedidoService{
         }
 
         var pedidos = pedidosEntity.stream()
-                .map(pedidoEntity ->
-                     new PedidoRecord(
-                             pedidoEntity.getId(),
-                            null,
-                            pedidoEntity.getData(),
-                             pedidoEntity.getStatus()
-                    )
-                )
+                .map(pedidoEntity -> PedidoRecord.fromEntity(pedidoEntity))
                 .collect(Collectors.toList());
 
 
@@ -61,14 +69,7 @@ public class PedidoServiceImpl implements PedidoService{
     public List<PedidoRecord> listaPedidosPorStatus(String status) {
         var pedidosEntity = pedidoRepository.findByStatus(status);
         var pedidos = pedidosEntity.stream()
-                .map(pedidoEntity ->
-                        new PedidoRecord(
-                                pedidoEntity.getId(),
-                                null,
-                                pedidoEntity.getData(),
-                                pedidoEntity.getStatus()
-                        )
-                )
+                .map(pedidoEntity -> PedidoRecord.fromEntity(pedidoEntity))
                 .collect(Collectors.toList());
 
         return pedidos;
