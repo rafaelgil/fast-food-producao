@@ -1,5 +1,6 @@
 package br.com.fiap.postech.fastfoodproducao.data.entity;
 
+import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -7,15 +8,18 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-@Document("fastfood")
+@Document("pedido")
+@Data
 public class PedidoEntity {
 
     @Id
-    private UUID id;
+    private String idObject;
+
+    private String id;
 
     private List<ProdutoEntity> produtos;
 
-    private LocalDateTime data;
+    private String data;
 
     private String status;
 }

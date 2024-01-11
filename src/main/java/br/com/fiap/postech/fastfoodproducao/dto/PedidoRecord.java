@@ -7,6 +7,6 @@ import java.util.UUID;
 public record PedidoRecord(
         UUID id,
         List<ProdutoRecord> produtos,
-        LocalDateTime dataRecebimento
+        String dataRecebimento
 ) {
 }
