@@ -1,5 +1,6 @@
 package br.com.fiap.postech.fastfoodproducao.application.service;
 
+import br.com.fiap.postech.fastfoodproducao.application.StatusPedido;
 import br.com.fiap.postech.fastfoodproducao.data.entity.PedidoEntity;
 import br.com.fiap.postech.fastfoodproducao.data.repository.PedidoRepository;
 import br.com.fiap.postech.fastfoodproducao.dto.PedidoRecord;
@@ -44,7 +45,7 @@ public class PedidoServiceImpl implements PedidoService{
         var pedidoEntity = pedidoRepository.findByIdPedido(id);
 
         if (Objects.nonNull(pedidoEntity)) {
-            return new PedidoRecord(UUID.fromString(pedidoEntity.getId()), null, pedidoEntity.getData(), pedidoEntity.getStatus());
+            return PedidoRecord.fromEntity(pedidoEntity);
         }
 
         return null;
@@ -81,7 +82,13 @@ public class PedidoServiceImpl implements PedidoService{
     }
 
     @Override
-    public PedidoRecord atualizaStatusPedido(UUID id, String status) {
-        return null;
+    public PedidoRecord atualizaStatusPedido(PedidoRecord pedidoRecord, String status) {
+        var statusPedido = StatusPedido.valueOf(pedidoRecord.status());
+        var novoStatus = statusPedido.avancaPedido();
+        if (novoStatus.name().equals(status)) {
+            pedidoRecord = pedidoRecord.updateStatus(status);
+            pedidoRepository.save(pedidoRecord.toEntity());
+        }
+        return pedidoRecord;
     }
 }

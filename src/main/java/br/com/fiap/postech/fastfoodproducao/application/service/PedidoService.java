@@ -19,5 +19,5 @@ public interface PedidoService {
 
     PedidoRecord enviaStatusPedido(UUID id);
 
-    PedidoRecord atualizaStatusPedido(UUID id, String status);
+    PedidoRecord atualizaStatusPedido(PedidoRecord pedidoRecord, String status);
 }

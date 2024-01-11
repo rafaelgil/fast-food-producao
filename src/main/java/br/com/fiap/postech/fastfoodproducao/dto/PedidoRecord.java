@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.UUID;
 
 public record PedidoRecord(
+        String idObject,
         UUID id,
         List<ProdutoRecord> produtos,
         LocalDateTime dataRecebimento,
@@ -14,6 +15,7 @@ public record PedidoRecord(
 ) {
     public static PedidoRecord fromEntity(PedidoEntity entity) {
         return new PedidoRecord(
+                entity.getIdObject(),
                 UUID.fromString(entity.getId()),
                 null,
                 entity.getData(),
@@ -21,4 +23,22 @@ public record PedidoRecord(
         );
     }
 
+    public PedidoRecord updateStatus(String newStatus) {
+        return new PedidoRecord(
+                idObject,
+                id,
+                null,
+                dataRecebimento,
+                newStatus
+        );
+    }
+
+    public PedidoEntity toEntity() {
+        return PedidoEntity.builder()
+                .idObject(idObject)
+                .id(id.toString())
+                .data(dataRecebimento)
+                .status(status)
+                .build();
+    }
 }
