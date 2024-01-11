@@ -1,6 +1,10 @@
 package br.com.fiap.postech.fastfoodproducao.dto;
 
 import br.com.fiap.postech.fastfoodproducao.data.entity.PedidoEntity;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -10,6 +14,8 @@ public record PedidoRecord(
         String idObject,
         UUID id,
         List<ProdutoRecord> produtos,
+        @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+        @JsonSerialize(using = LocalDateTimeSerializer.class)
         LocalDateTime dataRecebimento,
         String status
 ) {

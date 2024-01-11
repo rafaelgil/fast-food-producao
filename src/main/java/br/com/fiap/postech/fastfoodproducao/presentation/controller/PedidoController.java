@@ -2,6 +2,7 @@ package br.com.fiap.postech.fastfoodproducao.presentation.controller;
 
 import br.com.fiap.postech.fastfoodproducao.application.service.PedidoService;
 import br.com.fiap.postech.fastfoodproducao.dto.PedidoRecord;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,7 +41,7 @@ public class PedidoController {
     }
 
     @PatchMapping("/{id}/status/{status}")
-    public PedidoRecord atualizaStatusPedido(@PathVariable UUID id, @PathVariable String status) {
+    public PedidoRecord atualizaStatusPedido(@PathVariable UUID id, @PathVariable String status) throws JsonProcessingException {
 
         //consulta pedido
         var pedido = this.getPedido(id);
