@@ -18,5 +18,5 @@ public interface PedidoService {
 
     PedidoDto enviaStatusPedido(UUID id);
 
-    PedidoDto atualizaStatusPedido(PedidoDto pedidoRecord, String status) throws JsonProcessingException;
+    PedidoDto atualizaStatusPedido(PedidoDto pedidoDto, String status) throws JsonProcessingException;
 }

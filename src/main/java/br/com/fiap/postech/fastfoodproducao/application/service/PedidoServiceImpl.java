@@ -86,15 +86,15 @@ public class PedidoServiceImpl implements PedidoService{
     }
 
     @Override
-    public PedidoDto atualizaStatusPedido(PedidoDto pedidoRecord, String status) throws JsonProcessingException {
-        var statusPedido = StatusPedido.valueOf(pedidoRecord.status());
+    public PedidoDto atualizaStatusPedido(PedidoDto pedidoDto, String status) throws JsonProcessingException {
+        var statusPedido = StatusPedido.valueOf(pedidoDto.status());
         var novoStatus = statusPedido.avancaPedido();
         if (novoStatus.name().equals(status)) {
-            pedidoRecord = pedidoRecord.updateStatus(status);
-            pedidoRepository.save(pedidoRecord.toEntity());
+            pedidoDto = pedidoDto.updateStatus(status);
+            pedidoRepository.save(pedidoDto.toEntity());
 
-            pedidoProducer.send(pedidoRecord);
+            pedidoProducer.send(pedidoDto);
         }
-        return pedidoRecord;
+        return pedidoDto;
     }
 }

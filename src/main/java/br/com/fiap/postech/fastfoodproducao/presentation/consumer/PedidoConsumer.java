@@ -21,15 +21,15 @@ public class PedidoConsumer {
 
     @SqsListener("fastfood-pedido")
     public void recieveMessage(Message<PedidoDto> message) {
-        PedidoDto pedidoRecord = message.getPayload();
+        PedidoDto pedidoDto = message.getPayload();
 
-        var pedidoFound = pedidoService.consultaPedido(pedidoRecord.id());
+        var pedidoFound = pedidoService.consultaPedido(pedidoDto.id());
         if (Objects.nonNull(pedidoFound)) {
             logger.info("Pedido já existe");
             return;
         }
 
-        pedidoService.salvaPedido(pedidoRecord);
+        pedidoService.salvaPedido(pedidoDto);
 
         logger.info("Mensagem recebida: "+ message.getPayload() );
     }
