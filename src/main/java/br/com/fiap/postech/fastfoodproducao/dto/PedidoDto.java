@@ -10,17 +10,17 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-public record PedidoRecord(
+public record PedidoDto(
         String idObject,
         UUID id,
-        List<ProdutoRecord> produtos,
+        List<ItemPedidoDto> itens,
         @JsonDeserialize(using = LocalDateTimeDeserializer.class)
         @JsonSerialize(using = LocalDateTimeSerializer.class)
         LocalDateTime dataRecebimento,
         String status
 ) {
-    public static PedidoRecord fromEntity(PedidoEntity entity) {
-        return new PedidoRecord(
+    public static PedidoDto fromEntity(PedidoEntity entity) {
+        return new PedidoDto(
                 entity.getIdObject(),
                 UUID.fromString(entity.getId()),
                 null,
@@ -29,8 +29,8 @@ public record PedidoRecord(
         );
     }
 
-    public PedidoRecord updateStatus(String newStatus) {
-        return new PedidoRecord(
+    public PedidoDto updateStatus(String newStatus) {
+        return new PedidoDto(
                 idObject,
                 id,
                 null,

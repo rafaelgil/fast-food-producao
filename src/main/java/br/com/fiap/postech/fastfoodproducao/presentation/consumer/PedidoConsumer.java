@@ -1,7 +1,7 @@
 package br.com.fiap.postech.fastfoodproducao.presentation.consumer;
 
 import br.com.fiap.postech.fastfoodproducao.application.service.PedidoService;
-import br.com.fiap.postech.fastfoodproducao.dto.PedidoRecord;
+import br.com.fiap.postech.fastfoodproducao.dto.PedidoDto;
 import io.awspring.cloud.sqs.annotation.SqsListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,8 +20,8 @@ public class PedidoConsumer {
     private PedidoService pedidoService;
 
     @SqsListener("fastfood-pedido")
-    public void recieveMessage(Message<PedidoRecord> message) {
-        PedidoRecord pedidoRecord = message.getPayload();
+    public void recieveMessage(Message<PedidoDto> message) {
+        PedidoDto pedidoRecord = message.getPayload();
 
         var pedidoFound = pedidoService.consultaPedido(pedidoRecord.id());
         if (Objects.nonNull(pedidoFound)) {

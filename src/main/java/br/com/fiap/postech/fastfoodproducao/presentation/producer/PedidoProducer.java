@@ -1,6 +1,6 @@
 package br.com.fiap.postech.fastfoodproducao.presentation.producer;
 
-import br.com.fiap.postech.fastfoodproducao.dto.PedidoRecord;
+import br.com.fiap.postech.fastfoodproducao.dto.PedidoDto;
 import br.com.fiap.postech.fastfoodproducao.presentation.consumer.PedidoConsumer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,7 +22,7 @@ public class PedidoProducer {
     @Autowired
     private SqsTemplate sqsTemplate;
 
-    public void send(final PedidoRecord pedido) throws JsonProcessingException {
+    public void send(final PedidoDto pedido) throws JsonProcessingException {
 
         logger.info("Enviando Pedido: " + pedido);
 

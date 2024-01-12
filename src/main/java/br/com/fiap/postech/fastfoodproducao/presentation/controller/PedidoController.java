@@ -1,7 +1,7 @@
 package br.com.fiap.postech.fastfoodproducao.presentation.controller;
 
 import br.com.fiap.postech.fastfoodproducao.application.service.PedidoService;
-import br.com.fiap.postech.fastfoodproducao.dto.PedidoRecord;
+import br.com.fiap.postech.fastfoodproducao.dto.PedidoDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +18,7 @@ public class PedidoController {
 
 
     @GetMapping
-    public List<PedidoRecord> getAll() {
+    public List<PedidoDto> getAll() {
 
         var pedidos = pedidoService.listaPedidos();
 
@@ -26,14 +26,14 @@ public class PedidoController {
     }
 
     @GetMapping("/{id}")
-    public PedidoRecord getPedido(@PathVariable UUID id) {
+    public PedidoDto getPedido(@PathVariable UUID id) {
 
         var pedido = pedidoService.consultaPedido(id);
         return pedido;
     }
 
     @GetMapping("/status/{status}")
-    public List<PedidoRecord> getPedidosByStatus(@PathVariable String status) {
+    public List<PedidoDto> getPedidosByStatus(@PathVariable String status) {
 
         var pedidos = pedidoService.listaPedidosPorStatus(status);
 
@@ -41,7 +41,7 @@ public class PedidoController {
     }
 
     @PatchMapping("/{id}/status/{status}")
-    public PedidoRecord atualizaStatusPedido(@PathVariable UUID id, @PathVariable String status) throws JsonProcessingException {
+    public PedidoDto atualizaStatusPedido(@PathVariable UUID id, @PathVariable String status) throws JsonProcessingException {
 
         //consulta pedido
         var pedido = this.getPedido(id);

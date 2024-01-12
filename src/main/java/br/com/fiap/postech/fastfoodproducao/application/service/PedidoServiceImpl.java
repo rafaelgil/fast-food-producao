@@ -3,8 +3,7 @@ package br.com.fiap.postech.fastfoodproducao.application.service;
 import br.com.fiap.postech.fastfoodproducao.application.StatusPedido;
 import br.com.fiap.postech.fastfoodproducao.data.entity.PedidoEntity;
 import br.com.fiap.postech.fastfoodproducao.data.repository.PedidoRepository;
-import br.com.fiap.postech.fastfoodproducao.dto.PedidoRecord;
-import br.com.fiap.postech.fastfoodproducao.presentation.consumer.PedidoConsumer;
+import br.com.fiap.postech.fastfoodproducao.dto.PedidoDto;
 import br.com.fiap.postech.fastfoodproducao.presentation.producer.PedidoProducer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.slf4j.Logger;
@@ -29,7 +28,7 @@ public class PedidoServiceImpl implements PedidoService{
     private PedidoProducer pedidoProducer;
 
     @Override
-    public void salvaPedido(PedidoRecord pedido) {
+    public void salvaPedido(PedidoDto pedido) {
 
         var pedidoEntity = PedidoEntity.builder()
                 .id(pedido.id().toString())
@@ -43,21 +42,21 @@ public class PedidoServiceImpl implements PedidoService{
     }
 
     @Override
-    public PedidoRecord consultaPedido(UUID id) {
+    public PedidoDto consultaPedido(UUID id) {
         if (Objects.isNull(id)) {
             return null;
         }
         var pedidoEntity = pedidoRepository.findByIdPedido(id);
 
         if (Objects.nonNull(pedidoEntity)) {
-            return PedidoRecord.fromEntity(pedidoEntity);
+            return PedidoDto.fromEntity(pedidoEntity);
         }
 
         return null;
     }
 
     @Override
-    public List<PedidoRecord> listaPedidos() {
+    public List<PedidoDto> listaPedidos() {
         var pedidosEntity = pedidoRepository.findAll();
 
         if (pedidosEntity != null && pedidosEntity.isEmpty()) {
@@ -65,29 +64,29 @@ public class PedidoServiceImpl implements PedidoService{
         }
 
         var pedidos = pedidosEntity.stream()
-                .map(pedidoEntity -> PedidoRecord.fromEntity(pedidoEntity))
+                .map(pedidoEntity -> PedidoDto.fromEntity(pedidoEntity))
                 .collect(Collectors.toList());
 
 
         return pedidos;
     }
 
-    public List<PedidoRecord> listaPedidosPorStatus(String status) {
+    public List<PedidoDto> listaPedidosPorStatus(String status) {
         var pedidosEntity = pedidoRepository.findByStatus(status);
         var pedidos = pedidosEntity.stream()
-                .map(pedidoEntity -> PedidoRecord.fromEntity(pedidoEntity))
+                .map(pedidoEntity -> PedidoDto.fromEntity(pedidoEntity))
                 .collect(Collectors.toList());
 
         return pedidos;
     }
 
     @Override
-    public PedidoRecord enviaStatusPedido(UUID id) {
+    public PedidoDto enviaStatusPedido(UUID id) {
         return null;
     }
 
     @Override
-    public PedidoRecord atualizaStatusPedido(PedidoRecord pedidoRecord, String status) throws JsonProcessingException {
+    public PedidoDto atualizaStatusPedido(PedidoDto pedidoRecord, String status) throws JsonProcessingException {
         var statusPedido = StatusPedido.valueOf(pedidoRecord.status());
         var novoStatus = statusPedido.avancaPedido();
         if (novoStatus.name().equals(status)) {
