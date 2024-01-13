@@ -16,7 +16,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class PedidoProducer {
 
-    private static final Logger logger = LoggerFactory.getLogger(PedidoProducer.class);
+    private static final Logger logger = LoggerFactory.getLogger(PedidoConsumer.class);
+
     @Value("${fast.food.pedido.send.queue.name}")
     private String QUEUE_SEND_STATUS;
     @Autowired
