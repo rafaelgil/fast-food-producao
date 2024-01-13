@@ -43,12 +43,7 @@ public class PedidoController {
     @PatchMapping("/{id}/status/{status}")
     public PedidoDto atualizaStatusPedido(@PathVariable UUID id, @PathVariable String status) throws JsonProcessingException {
 
-        //consulta pedido
-        var pedido = this.getPedido(id);
-        //valida status
-        //atualiza pedido
-        var pedidoResult = pedidoService.atualizaStatusPedido(pedido, status);
-        //envia mensagemp com atualizacao do pedido
+        var pedidoResult = pedidoService.atualizaStatusPedido(id, status);
 
         return pedidoResult;
     }
