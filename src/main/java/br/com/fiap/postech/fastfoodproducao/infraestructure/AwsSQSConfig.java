@@ -45,7 +45,7 @@ public class AwsSQSConfig {
     public SqsTemplate sqsTemplate(SqsAsyncClient sqsAsyncClient) {
         return SqsTemplate.builder().sqsAsyncClient(sqsAsyncClient).build();
     }
-
+  
     @Bean
     public SqsMessageListenerContainerFactory<Object> defaultSqsListenerContainerFactory(SqsAsyncClient sqsAsyncClient) {
 

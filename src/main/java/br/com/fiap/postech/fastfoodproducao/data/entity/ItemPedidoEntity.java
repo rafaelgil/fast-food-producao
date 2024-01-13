@@ -5,8 +5,8 @@ import lombok.Data;
 
 @Data
 @Builder
-public class ProdutoEntity {
+public class ItemPedidoEntity {
     private String id;
-    private String descricao;
-    private String categoria;
+    private ProdutoEntity produto;
+    private int quantidade;
 }
