@@ -7,7 +7,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 @Document("pedido")
 @Data
@@ -19,7 +18,7 @@ public class PedidoEntity {
 
     private String id;
 
-    private List<ProdutoEntity> produtos;
+    private List<ItemPedidoEntity> itens;
 
     private LocalDateTime data;
 
