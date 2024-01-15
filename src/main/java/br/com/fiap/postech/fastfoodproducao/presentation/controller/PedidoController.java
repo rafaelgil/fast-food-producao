@@ -4,11 +4,16 @@ import br.com.fiap.postech.fastfoodproducao.application.exception.InvalidStatusE
 import br.com.fiap.postech.fastfoodproducao.application.exception.PedidoNotFoundException;
 import br.com.fiap.postech.fastfoodproducao.application.service.PedidoService;
 import br.com.fiap.postech.fastfoodproducao.dto.PedidoDto;
+import br.com.fiap.postech.fastfoodproducao.dto.response.ResponseMeta;
+import br.com.fiap.postech.fastfoodproducao.dto.response.ResponseSuccess;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -20,9 +25,17 @@ public class PedidoController {
 
 
     @GetMapping
-    public List<PedidoDto> getAll() {
+    public ResponseEntity<ResponseSuccess> getAll(@RequestParam(required = false) Integer page,
+                                                 @RequestParam(required = false) Integer size) {
 
-        return pedidoService.listaPedidos();
+        Pageable pageable = PageRequest.of(page != null ? page : 0, size != null ? size : 10);
+        var pedidos = pedidoService.listaPedidos(pageable);
+
+        var meta = new ResponseMeta(pedidos.getContent().size(), pageable.getPageNumber());
+
+        var response = new ResponseSuccess(pedidos.getContent(), meta);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -32,9 +45,18 @@ public class PedidoController {
     }
 
     @GetMapping("/status/{status}")
-    public List<PedidoDto> getPedidosByStatus(@PathVariable String status) {
+    public ResponseEntity<ResponseSuccess> getPedidosByStatus(@PathVariable String status,
+                                                              @RequestParam(required = false) Integer page,
+                                                              @RequestParam(required = false) Integer size) {
+        Pageable pageable = PageRequest.of(page != null ? page : 0, size != null ? size : 10);
 
-        return pedidoService.listaPedidosPorStatus(status);
+        var pedidos = pedidoService.listaPedidosPorStatus(status, pageable);
+
+        var meta = new ResponseMeta(pedidos.getContent().size(), pageable.getPageNumber());
+
+        var response = new ResponseSuccess(pedidos.getContent(), meta);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PatchMapping("/{id}/status/{status}")
