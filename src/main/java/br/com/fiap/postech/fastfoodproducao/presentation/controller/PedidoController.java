@@ -1,5 +1,7 @@
 package br.com.fiap.postech.fastfoodproducao.presentation.controller;
 
+import br.com.fiap.postech.fastfoodproducao.application.exception.InvalidStatusException;
+import br.com.fiap.postech.fastfoodproducao.application.exception.PedidoNotFoundException;
 import br.com.fiap.postech.fastfoodproducao.application.service.PedidoService;
 import br.com.fiap.postech.fastfoodproducao.dto.PedidoDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -20,31 +22,24 @@ public class PedidoController {
     @GetMapping
     public List<PedidoDto> getAll() {
 
-        var pedidos = pedidoService.listaPedidos();
-
-        return pedidos;
+        return pedidoService.listaPedidos();
     }
 
     @GetMapping("/{id}")
-    public PedidoDto getPedido(@PathVariable UUID id) {
+    public PedidoDto getPedido(@PathVariable UUID id) throws PedidoNotFoundException {
 
-        var pedido = pedidoService.consultaPedido(id);
-        return pedido;
+        return pedidoService.consultaPedido(id);
     }
 
     @GetMapping("/status/{status}")
     public List<PedidoDto> getPedidosByStatus(@PathVariable String status) {
 
-        var pedidos = pedidoService.listaPedidosPorStatus(status);
-
-        return pedidos;
+        return pedidoService.listaPedidosPorStatus(status);
     }
 
     @PatchMapping("/{id}/status/{status}")
-    public PedidoDto atualizaStatusPedido(@PathVariable UUID id, @PathVariable String status) throws JsonProcessingException {
+    public PedidoDto atualizaStatusPedido(@PathVariable UUID id, @PathVariable String status) throws JsonProcessingException, InvalidStatusException, PedidoNotFoundException {
 
-        var pedidoResult = pedidoService.atualizaStatusPedido(id, status);
-
-        return pedidoResult;
+        return pedidoService.atualizaStatusPedido(id, status);
     }
 }

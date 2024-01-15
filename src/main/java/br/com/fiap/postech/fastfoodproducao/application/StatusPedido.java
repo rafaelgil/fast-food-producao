@@ -38,4 +38,15 @@ public enum StatusPedido {
     }
 
     public abstract StatusPedido avancaPedido();
+
+    public static StatusPedido getByStatus(String status) {
+
+        for (StatusPedido statusPedido : StatusPedido.values()) {
+            if (statusPedido.getStatus().equals(status)) {
+                return statusPedido;
+            }
+        }
+
+        return null;
+    }
 }

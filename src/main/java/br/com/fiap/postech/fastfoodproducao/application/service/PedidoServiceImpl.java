@@ -1,6 +1,8 @@
 package br.com.fiap.postech.fastfoodproducao.application.service;
 
 import br.com.fiap.postech.fastfoodproducao.application.StatusPedido;
+import br.com.fiap.postech.fastfoodproducao.application.exception.InvalidStatusException;
+import br.com.fiap.postech.fastfoodproducao.application.exception.PedidoNotFoundException;
 import br.com.fiap.postech.fastfoodproducao.data.repository.PedidoRepository;
 import br.com.fiap.postech.fastfoodproducao.dto.PedidoDto;
 import br.com.fiap.postech.fastfoodproducao.presentation.producer.PedidoProducer;
@@ -14,7 +16,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class PedidoServiceImpl implements PedidoService{
@@ -38,17 +39,14 @@ public class PedidoServiceImpl implements PedidoService{
     }
 
     @Override
-    public PedidoDto consultaPedido(UUID id) {
-        if (Objects.isNull(id)) {
-            return null;
-        }
+    public PedidoDto consultaPedido(UUID id) throws PedidoNotFoundException {
         var pedidoEntity = pedidoRepository.findByIdPedido(id);
 
         if (Objects.nonNull(pedidoEntity)) {
             return PedidoDto.fromEntity(pedidoEntity);
         }
 
-        return null;
+        throw new PedidoNotFoundException();
     }
 
     @Override
@@ -63,14 +61,14 @@ public class PedidoServiceImpl implements PedidoService{
 
         return pedidosEntity.stream()
                 .map(PedidoDto::fromEntity)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public List<PedidoDto> listaPedidosPorStatus(String status) {
         var pedidosEntity = pedidoRepository.findByStatus(status);
         return pedidosEntity.stream()
                 .map(PedidoDto::fromEntity)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
@@ -80,11 +78,14 @@ public class PedidoServiceImpl implements PedidoService{
     }
 
     @Override
-    public PedidoDto atualizaStatusPedido(UUID id, String status) throws JsonProcessingException {
+    public PedidoDto atualizaStatusPedido(UUID id, String status) throws JsonProcessingException, PedidoNotFoundException, InvalidStatusException {
         var pedidoFound = this.consultaPedido(id);
-        if (pedidoFound == null) {
-            return null;
+
+        var newStatus = StatusPedido.getByStatus(status);
+        if (Objects.isNull(newStatus)) {
+            throw new InvalidStatusException();
         }
+
         var statusPedido = StatusPedido.valueOf(pedidoFound.status());
         var novoStatus = statusPedido.avancaPedido();
         if (novoStatus.name().equals(status)) {
