@@ -40,14 +40,23 @@ public class PedidoServiceImpl implements PedidoService{
     }
 
     @Override
-    public PedidoDto consultaPedido(UUID id) throws PedidoNotFoundException {
+    public PedidoDto consultaPedido(UUID id) {
         var pedidoEntity = pedidoRepository.findByIdPedido(id);
 
         if (Objects.nonNull(pedidoEntity)) {
             return PedidoDto.fromEntity(pedidoEntity);
         }
 
-        throw new PedidoNotFoundException();
+        return null;
+    }
+
+    @Override
+    public PedidoDto consultaPedidoValido(UUID id) throws PedidoNotFoundException {
+        var pedido = this.consultaPedido(id);
+        if (Objects.isNull(pedido)) {
+            throw new PedidoNotFoundException();
+        }
+        return pedido;
     }
 
     @Override
@@ -75,7 +84,7 @@ public class PedidoServiceImpl implements PedidoService{
 
     @Override
     public PedidoDto atualizaStatusPedido(UUID id, String status) throws JsonProcessingException, PedidoNotFoundException, InvalidStatusException {
-        var pedidoFound = this.consultaPedido(id);
+        var pedidoFound = this.consultaPedidoValido(id);
 
         var newStatus = StatusPedido.getByStatus(status);
         if (Objects.isNull(newStatus)) {

@@ -13,7 +13,9 @@ public interface PedidoService {
 
     void salvaPedido(PedidoDto pedido);
 
-    PedidoDto consultaPedido(UUID id) throws PedidoNotFoundException;
+    PedidoDto consultaPedido(UUID id);
+
+    PedidoDto consultaPedidoValido(UUID id) throws PedidoNotFoundException;
 
     Page<PedidoDto> listaPedidos(Pageable pageable);
 
