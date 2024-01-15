@@ -10,10 +10,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -50,25 +51,20 @@ public class PedidoServiceImpl implements PedidoService{
     }
 
     @Override
-    public List<PedidoDto> listaPedidos() {
-        var pedidosEntity = pedidoRepository.findAll();
+    public Page<PedidoDto> listaPedidos(Pageable pageable) {
+        var pedidosEntity = pedidoRepository.findAll(pageable);
 
+        var pedidosDto = pedidosEntity.stream().map(PedidoDto::fromEntity).toList();
 
-
-        if (pedidosEntity == null || pedidosEntity.isEmpty()) {
-            return Collections.emptyList();
-        }
-
-        return pedidosEntity.stream()
-                .map(PedidoDto::fromEntity)
-                .toList();
+        return new PageImpl<>(pedidosDto,pageable, pedidosEntity.getTotalPages());
     }
 
-    public List<PedidoDto> listaPedidosPorStatus(String status) {
-        var pedidosEntity = pedidoRepository.findByStatus(status);
-        return pedidosEntity.stream()
+    public Page<PedidoDto> listaPedidosPorStatus(String status, Pageable pageable) {
+        var pedidosEntity = pedidoRepository.findByStatus(status, pageable);
+        var pedidos = pedidosEntity.stream()
                 .map(PedidoDto::fromEntity)
                 .toList();
+        return new PageImpl<>(pedidos,pageable, pedidosEntity.getTotalPages());
     }
 
     @Override

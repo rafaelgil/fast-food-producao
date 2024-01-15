@@ -4,8 +4,9 @@ import br.com.fiap.postech.fastfoodproducao.application.exception.InvalidStatusE
 import br.com.fiap.postech.fastfoodproducao.application.exception.PedidoNotFoundException;
 import br.com.fiap.postech.fastfoodproducao.dto.PedidoDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
-import java.util.List;
 import java.util.UUID;
 
 public interface PedidoService {
@@ -14,9 +15,9 @@ public interface PedidoService {
 
     PedidoDto consultaPedido(UUID id) throws PedidoNotFoundException;
 
-    List<PedidoDto> listaPedidos();
+    Page<PedidoDto> listaPedidos(Pageable pageable);
 
-    List<PedidoDto> listaPedidosPorStatus(String status);
+    Page<PedidoDto> listaPedidosPorStatus(String status, Pageable pageable);
 
     PedidoDto enviaStatusPedido(UUID id);
 

@@ -1,6 +1,8 @@
 package br.com.fiap.postech.fastfoodproducao.data.repository;
 
 import br.com.fiap.postech.fastfoodproducao.data.entity.PedidoEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
@@ -15,5 +17,5 @@ public interface PedidoRepository extends MongoRepository<PedidoEntity, UUID> {
     PedidoEntity findByIdPedido(UUID id);
 
     @Query("{status:'?0'}")
-    List<PedidoEntity> findByStatus(String status);
+    Page<PedidoEntity> findByStatus(String status, Pageable pageable);
 }
