@@ -1,5 +1,7 @@
 package br.com.fiap.postech.fastfoodproducao.application.service;
 
+import br.com.fiap.postech.fastfoodproducao.application.exception.InvalidStatusException;
+import br.com.fiap.postech.fastfoodproducao.application.exception.PedidoNotFoundException;
 import br.com.fiap.postech.fastfoodproducao.dto.PedidoDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -10,7 +12,7 @@ public interface PedidoService {
 
     void salvaPedido(PedidoDto pedido);
 
-    PedidoDto consultaPedido(UUID id);
+    PedidoDto consultaPedido(UUID id) throws PedidoNotFoundException;
 
     List<PedidoDto> listaPedidos();
 
@@ -18,5 +20,5 @@ public interface PedidoService {
 
     PedidoDto enviaStatusPedido(UUID id);
 
-    PedidoDto atualizaStatusPedido(UUID id, String status) throws JsonProcessingException;
+    PedidoDto atualizaStatusPedido(UUID id, String status) throws JsonProcessingException, InvalidStatusException, PedidoNotFoundException;
 }
