@@ -36,31 +36,48 @@ public class PedidoServiceImpl implements PedidoService{
 
         pedidoRepository.save(pedidoEntity);
 
-        logger.info("ID Object Pedido: " + pedidoEntity.getIdObject());
+        logger.info("[salvaPedido] ID Object Pedido: " + pedidoEntity.getIdObject());
     }
 
     @Override
-    public PedidoDto consultaPedido(UUID id) throws PedidoNotFoundException {
+    public PedidoDto consultaPedido(UUID id) {
+        logger.info("[consultaPedido] Consultando pedido com id: {0}", id);
         var pedidoEntity = pedidoRepository.findByIdPedido(id);
 
         if (Objects.nonNull(pedidoEntity)) {
+            logger.info("[consultaPedido] Pedido encontrado: {0}", pedidoEntity);
             return PedidoDto.fromEntity(pedidoEntity);
         }
 
-        throw new PedidoNotFoundException();
+        return null;
+    }
+
+    @Override
+    public PedidoDto consultaPedidoValido(UUID id) throws PedidoNotFoundException {
+        var pedido = this.consultaPedido(id);
+        if (Objects.isNull(pedido)) {
+            logger.error("[consultaPedidoValido] Pedido não encontrado {0}", id);
+            throw new PedidoNotFoundException();
+        }
+        return pedido;
     }
 
     @Override
     public Page<PedidoDto> listaPedidos(Pageable pageable) {
+        logger.info("[listaPedidos] Listando pedidos - página {0} - qtde {1}", pageable.getPageNumber(), pageable.getPageSize());
         var pedidosEntity = pedidoRepository.findAll(pageable);
 
+        logger.info("[listaPedidos] Total de pedidos encontrados {0}", pedidosEntity.getTotalElements());
         var pedidosDto = pedidosEntity.stream().map(PedidoDto::fromEntity).toList();
 
         return new PageImpl<>(pedidosDto,pageable, pedidosEntity.getTotalPages());
     }
 
     public Page<PedidoDto> listaPedidosPorStatus(String status, Pageable pageable) {
+        logger.info("[listaPedidosPorStatus] Listando pedidos - página {0} - qtde {1}", pageable.getPageNumber(), pageable.getPageSize());
         var pedidosEntity = pedidoRepository.findByStatus(status, pageable);
+
+        logger.info("[listaPedidosPorStatus] Total de pedidos encontrados {0}", pedidosEntity.getTotalElements());
         var pedidos = pedidosEntity.stream()
                 .map(PedidoDto::fromEntity)
                 .toList();
@@ -68,27 +85,29 @@ public class PedidoServiceImpl implements PedidoService{
     }
 
     @Override
-    public PedidoDto enviaStatusPedido(UUID id) {
-
-        return null;
-    }
-
-    @Override
     public PedidoDto atualizaStatusPedido(UUID id, String status) throws JsonProcessingException, PedidoNotFoundException, InvalidStatusException {
-        var pedidoFound = this.consultaPedido(id);
+        logger.info("[atualizaStatusPedido] ID de pedido recebido: {0}", id);
+        var pedidoFound = this.consultaPedidoValido(id);
 
+        logger.info("[atualizaStatusPedido] Status recebido: {0}", status);
         var newStatus = StatusPedido.getByStatus(status);
         if (Objects.isNull(newStatus)) {
+            logger.error("[atualizaStatusPedido] Status inválido");
             throw new InvalidStatusException();
         }
 
+        logger.info("[atualizaStatusPedido] Status atual do pedido: {0}", pedidoFound.status());
         var statusPedido = StatusPedido.valueOf(pedidoFound.status());
         var novoStatus = statusPedido.avancaPedido();
+
         if (novoStatus.name().equals(status)) {
             pedidoFound = pedidoFound.updateStatus(status);
         }
 
+        logger.info("[atualizaStatusPedido] Atualizando pedido");
         pedidoRepository.save(pedidoFound.toEntity());
+
+        logger.info("[atualizaStatusPedido] Enviando pedido atualizado");
         pedidoProducer.send(pedidoFound);
 
         return pedidoFound;

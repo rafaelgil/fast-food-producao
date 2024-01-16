@@ -13,13 +13,13 @@ public interface PedidoService {
 
     void salvaPedido(PedidoDto pedido);
 
-    PedidoDto consultaPedido(UUID id) throws PedidoNotFoundException;
+    PedidoDto consultaPedido(UUID id);
+
+    PedidoDto consultaPedidoValido(UUID id) throws PedidoNotFoundException;
 
     Page<PedidoDto> listaPedidos(Pageable pageable);
 
     Page<PedidoDto> listaPedidosPorStatus(String status, Pageable pageable);
-
-    PedidoDto enviaStatusPedido(UUID id);
 
     PedidoDto atualizaStatusPedido(UUID id, String status) throws JsonProcessingException, InvalidStatusException, PedidoNotFoundException;
 }
