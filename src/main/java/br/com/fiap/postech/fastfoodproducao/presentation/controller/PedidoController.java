@@ -7,6 +7,8 @@ import br.com.fiap.postech.fastfoodproducao.dto.PedidoDto;
 import br.com.fiap.postech.fastfoodproducao.dto.response.ResponseMeta;
 import br.com.fiap.postech.fastfoodproducao.dto.response.ResponseSuccess;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +21,8 @@ import java.util.UUID;
 @RestController
 @RequestMapping("pedidos")
 public class PedidoController {
+
+    private static final Logger logger = LoggerFactory.getLogger(PedidoController.class);
 
     @Autowired
     private PedidoService pedidoService;
@@ -40,8 +44,8 @@ public class PedidoController {
 
     @GetMapping("/{id}")
     public PedidoDto getPedido(@PathVariable UUID id) throws PedidoNotFoundException {
-
-        return pedidoService.consultaPedido(id);
+        logger.info("[getPedido] id de pedido recebido: {0}", id);
+        return pedidoService.consultaPedidoValido(id);
     }
 
     @GetMapping("/status/{status}")

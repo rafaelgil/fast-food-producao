@@ -1,7 +1,6 @@
 package br.com.fiap.postech.fastfoodproducao.presentation.producer;
 
 import br.com.fiap.postech.fastfoodproducao.dto.PedidoDto;
-import br.com.fiap.postech.fastfoodproducao.presentation.consumer.PedidoConsumer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.awspring.cloud.sqs.operations.SqsTemplate;
@@ -16,7 +15,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class PedidoProducer {
 
-    private static final Logger logger = LoggerFactory.getLogger(PedidoConsumer.class);
+    private static final Logger logger = LoggerFactory.getLogger(PedidoProducer.class);
 
     @Value("${fast.food.pedido.send.queue.name}")
     private String QUEUE_SEND_STATUS;
@@ -25,12 +24,12 @@ public class PedidoProducer {
 
     public void send(final PedidoDto pedido) throws JsonProcessingException {
 
-        logger.info("Enviando Pedido: " + pedido);
+        logger.info("[send] Enviando Pedido: " + pedido);
 
         Message<String> message = MessageBuilder.withPayload(new ObjectMapper().writeValueAsString(pedido)).build();
 
         sqsTemplate.send(QUEUE_SEND_STATUS, message);
 
-        logger.info("Pedido enviado: " + pedido);
+        logger.info("[send] Pedido enviado: " + pedido);
     }
 }
