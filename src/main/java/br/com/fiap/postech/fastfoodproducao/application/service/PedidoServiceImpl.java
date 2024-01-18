@@ -25,10 +25,8 @@ public class PedidoServiceImpl implements PedidoService{
 
     private static final Logger logger = LoggerFactory.getLogger(PedidoServiceImpl.class);
 
-//    @Autowired
     private final PedidoRepository pedidoRepository;
 
-//    @Autowired
     private final PedidoProducer pedidoProducer;
 
     @Override
