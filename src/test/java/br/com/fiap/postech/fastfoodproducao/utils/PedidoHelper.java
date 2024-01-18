@@ -23,4 +23,14 @@ public class PedidoHelper {
 
         return new PedidoDto("123456", UUID.fromString(idPedido), null, LocalDateTime.now(), StatusPedido.RECEBIDO.getStatus());
     }
+
+    public static PedidoDto gerarPedido() {
+        return new PedidoDto(
+                "123654789",
+                UUID.randomUUID(),
+                null,
+                LocalDateTime.now(),
+                StatusPedido.RECEBIDO.name()
+        );
+    }
 }
