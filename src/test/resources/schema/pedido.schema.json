@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "$id": "http://example.com/example.json",
+  "type": "object",
+  "properties": {
+    "idObject": {
+      "type": "string"
+    },
+    "id": {
+      "type": "object"
+    },
+    "itens": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "produto": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "descricao": {
+                "type": "string"
+              },
+              "categoria": {
+                "type": "string"
+              }
+            }
+          },
+          "quantidade": {
+            "type": "integer"
+          }
+        }
+      }
+    },
+    "dataRecebimento": {
+      "type": "object"
+    },
+    "status": {
+      "type": "string"
+    }
+  }
+}
