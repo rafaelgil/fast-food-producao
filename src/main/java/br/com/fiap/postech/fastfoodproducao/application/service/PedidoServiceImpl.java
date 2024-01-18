@@ -103,9 +103,11 @@ public class PedidoServiceImpl implements PedidoService{
         var statusPedido = StatusPedido.valueOf(pedidoFound.status());
         var novoStatus = statusPedido.avancaPedido();
 
-        if (novoStatus.name().equals(status)) {
-            pedidoFound = pedidoFound.updateStatus(status);
+        if (!novoStatus.name().equals(status)) {
+            logger.error("[atualizaStatusPedido] Status atual não pode avançar para o Status {0}", status);
+            throw new InvalidStatusException();
         }
+        pedidoFound = pedidoFound.updateStatus(status);
 
         logger.info("[atualizaStatusPedido] Atualizando pedido");
         pedidoRepository.save(pedidoFound.toEntity());
