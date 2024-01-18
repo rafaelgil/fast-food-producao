@@ -42,7 +42,7 @@ public enum StatusPedido {
     public static StatusPedido getByStatus(String status) {
 
         for (StatusPedido statusPedido : StatusPedido.values()) {
-            if (statusPedido.getStatus().equals(status)) {
+            if (statusPedido.name().equals(status)) {
                 return statusPedido;
             }
         }

@@ -7,9 +7,9 @@ import br.com.fiap.postech.fastfoodproducao.dto.PedidoDto;
 import br.com.fiap.postech.fastfoodproducao.dto.response.ResponseMeta;
 import br.com.fiap.postech.fastfoodproducao.dto.response.ResponseSuccess;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -20,13 +20,12 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("pedidos")
+@RequiredArgsConstructor
 public class PedidoController {
 
     private static final Logger logger = LoggerFactory.getLogger(PedidoController.class);
 
-    @Autowired
-    private PedidoService pedidoService;
-
+    private final PedidoService pedidoService;
 
     @GetMapping
     public ResponseEntity<ResponseSuccess> getAll(@RequestParam(required = false) Integer page,
