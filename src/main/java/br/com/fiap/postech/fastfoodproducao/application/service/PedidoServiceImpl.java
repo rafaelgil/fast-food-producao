@@ -3,13 +3,14 @@ package br.com.fiap.postech.fastfoodproducao.application.service;
 import br.com.fiap.postech.fastfoodproducao.application.StatusPedido;
 import br.com.fiap.postech.fastfoodproducao.application.exception.InvalidStatusException;
 import br.com.fiap.postech.fastfoodproducao.application.exception.PedidoNotFoundException;
+import br.com.fiap.postech.fastfoodproducao.data.entity.PedidoEntity;
 import br.com.fiap.postech.fastfoodproducao.data.repository.PedidoRepository;
 import br.com.fiap.postech.fastfoodproducao.dto.PedidoDto;
 import br.com.fiap.postech.fastfoodproducao.presentation.producer.PedidoProducer;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -19,24 +20,26 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class PedidoServiceImpl implements PedidoService{
 
     private static final Logger logger = LoggerFactory.getLogger(PedidoServiceImpl.class);
 
-    @Autowired
-    private PedidoRepository pedidoRepository;
+//    @Autowired
+    private final PedidoRepository pedidoRepository;
 
-    @Autowired
-    private PedidoProducer pedidoProducer;
+//    @Autowired
+    private final PedidoProducer pedidoProducer;
 
     @Override
-    public void salvaPedido(PedidoDto pedido) {
+    public PedidoEntity salvaPedido(PedidoDto pedido) {
 
         var pedidoEntity = pedido.toEntity();
 
         pedidoRepository.save(pedidoEntity);
 
         logger.info("[salvaPedido] ID Object Pedido: " + pedidoEntity.getIdObject());
+        return pedidoEntity;
     }
 
     @Override

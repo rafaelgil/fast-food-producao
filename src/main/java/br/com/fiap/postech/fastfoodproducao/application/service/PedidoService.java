@@ -2,6 +2,7 @@ package br.com.fiap.postech.fastfoodproducao.application.service;
 
 import br.com.fiap.postech.fastfoodproducao.application.exception.InvalidStatusException;
 import br.com.fiap.postech.fastfoodproducao.application.exception.PedidoNotFoundException;
+import br.com.fiap.postech.fastfoodproducao.data.entity.PedidoEntity;
 import br.com.fiap.postech.fastfoodproducao.dto.PedidoDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.data.domain.Page;
@@ -11,7 +12,7 @@ import java.util.UUID;
 
 public interface PedidoService {
 
-    void salvaPedido(PedidoDto pedido);
+    PedidoEntity salvaPedido(PedidoDto pedido);
 
     PedidoDto consultaPedido(UUID id);
 
