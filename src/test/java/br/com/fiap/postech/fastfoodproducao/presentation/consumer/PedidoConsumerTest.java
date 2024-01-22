@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.messaging.support.GenericMessage;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.UUID;
 
@@ -17,7 +16,6 @@ import static org.mockito.Mockito.*;
 
 public class PedidoConsumerTest {
 
-    private MockMvc mockMvc;
 
     AutoCloseable mock;
 

@@ -17,7 +17,6 @@ public class PedidoConsumer {
 
     private static final Logger logger = LoggerFactory.getLogger(PedidoConsumer.class);
 
-//    @Autowired
     private final PedidoService pedidoService;
 
     @SqsListener("fastfood-pedido")
