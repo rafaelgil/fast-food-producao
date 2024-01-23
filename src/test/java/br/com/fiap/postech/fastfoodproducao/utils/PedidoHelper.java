@@ -1,9 +1,9 @@
 package br.com.fiap.postech.fastfoodproducao.utils;
 
 import br.com.fiap.postech.fastfoodproducao.application.StatusPedido;
+import br.com.fiap.postech.fastfoodproducao.data.entity.PedidoEntity;
 import br.com.fiap.postech.fastfoodproducao.data.repository.PedidoRepository;
 import br.com.fiap.postech.fastfoodproducao.dto.PedidoDto;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -11,7 +11,7 @@ import java.util.UUID;
 
 public class PedidoHelper {
 
-    private static String idPedido = "ccc51a9a-b3dc-4447-8c85-9610ff3c2142";
+    private static final String idPedido = "ccc51a9a-b3dc-4447-8c85-9610ff3c2142";
 
     public static PedidoDto geraPedido(PedidoRepository pedidoRepository) {
 
@@ -32,5 +32,13 @@ public class PedidoHelper {
                 LocalDateTime.now(),
                 StatusPedido.RECEBIDO.name()
         );
+    }
+
+    public static PedidoEntity mockPedidoEntity(UUID id) {
+        return PedidoEntity.builder()
+                .id("12345678")
+                .id(id.toString())
+                .status(StatusPedido.RECEBIDO.name())
+                .build();
     }
 }

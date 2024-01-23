@@ -5,7 +5,9 @@ import br.com.fiap.postech.fastfoodproducao.application.exception.InvalidStatusE
 import br.com.fiap.postech.fastfoodproducao.application.exception.PedidoNotFoundException;
 import br.com.fiap.postech.fastfoodproducao.data.entity.PedidoEntity;
 import br.com.fiap.postech.fastfoodproducao.data.repository.PedidoRepository;
+import br.com.fiap.postech.fastfoodproducao.dto.ItemPedidoDto;
 import br.com.fiap.postech.fastfoodproducao.dto.PedidoDto;
+import br.com.fiap.postech.fastfoodproducao.dto.ProdutoDto;
 import br.com.fiap.postech.fastfoodproducao.presentation.producer.PedidoProducer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.BeforeEach;
@@ -56,6 +58,24 @@ class PedidoServiceTest {
         assertThat(pedidoSalvo)
                 .isInstanceOf(PedidoEntity.class)
                 .isNotNull();
+
+        assertThat(pedidoSalvo.getItens().size())
+                .isEqualTo(1);
+
+        assertThat(pedidoSalvo.getItens().get(0).getId())
+                .isEqualTo(pedido.itens().get(0).id());
+
+        assertThat(pedidoSalvo.getItens().get(0).getQuantidade())
+                .isEqualTo(10);
+
+        assertThat(pedidoSalvo.getItens().get(0).getProduto().getId())
+                .isEqualTo(pedido.itens().get(0).produto().id());
+
+        assertThat(pedidoSalvo.getItens().get(0).getProduto().getDescricao())
+                .isEqualTo("teste");
+
+        assertThat(pedidoSalvo.getItens().get(0).getProduto().getCategoria())
+                .isEqualTo("teste");
     }
 
     @Test
@@ -185,10 +205,23 @@ class PedidoServiceTest {
     }
 
     private PedidoDto gerarPedido() {
+
+        var produto = new ProdutoDto(
+                UUID.randomUUID().toString(),
+                "teste",
+                "teste"
+        );
+
+        var item = new ItemPedidoDto(
+                UUID.randomUUID().toString(),
+                produto,
+                10
+        );
+
         return new PedidoDto(
                 "123654789",
                 UUID.randomUUID(),
-                null,
+                Arrays.asList(item),
                 LocalDateTime.now(),
                 StatusPedido.RECEBIDO.name()
         );
