@@ -94,10 +94,10 @@ jobs:
           java-version: 17
 
       - name: Change wrapper permissions
-        run: chmod +x ./gradlew
+        run: chmod +x pom.xml
 
       - name: Package
-        run: ./gradlew clean build -x test
+        run: pom.xml clean build -x test
 
       - name: Build, tag, and push image to Amazon ECR
         id: build-image
