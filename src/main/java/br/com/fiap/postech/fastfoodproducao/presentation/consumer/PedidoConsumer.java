@@ -19,7 +19,7 @@ public class PedidoConsumer {
 
     private final PedidoService pedidoService;
 
-    @SqsListener("fastfood-pedido")
+    @SqsListener("notificacao-pedido-sync")
     public void recieveMessage(Message<PedidoDto> message) {
         PedidoDto pedidoDto = message.getPayload();
 
@@ -31,6 +31,7 @@ public class PedidoConsumer {
             return;
         }
 
+        pedidoDto = new PedidoDto(pedidoDto.idObject(), pedidoDto.id(), pedidoDto.itens(), pedidoDto.dataRecebimento(), "RECEBIDO");
         pedidoService.salvaPedido(pedidoDto);
 
         logger.info("[recieveMessage]Mensagem processada: {0}", message.getPayload() );
