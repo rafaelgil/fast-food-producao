@@ -1,4 +1,4 @@
-package br.com.fiap.postech.fastfoodproducao.presentation.producer;
+package br.com.fiap.postech.fastfoodproducao.application.sqs.producer;
 
 import br.com.fiap.postech.fastfoodproducao.dto.PedidoDto;
 import br.com.fiap.postech.fastfoodproducao.utils.PedidoHelper;

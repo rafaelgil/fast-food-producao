@@ -1,4 +1,4 @@
-package br.com.fiap.postech.fastfoodproducao.presentation.consumer;
+package br.com.fiap.postech.fastfoodproducao.application.sqs.consumer;
 
 import br.com.fiap.postech.fastfoodproducao.application.service.PedidoService;
 import br.com.fiap.postech.fastfoodproducao.dto.PedidoDto;
@@ -23,17 +23,17 @@ public class PedidoConsumer {
     public void recieveMessage(Message<PedidoDto> message) {
         PedidoDto pedidoDto = message.getPayload();
 
-        logger.info("[recieveMessage]Mensagem recebida: {0}", message.getPayload() );
+        logger.info("[recieveMessage]Mensagem recebida: {}", message.getPayload() );
 
         var pedidoFound = pedidoService.consultaPedido(pedidoDto.id());
         if (Objects.nonNull(pedidoFound)) {
-            logger.info("[recieveMessage]Pedido já existe: {0}", pedidoFound.id());
+            logger.info("[recieveMessage]Pedido já existe: {}", pedidoFound.id());
             return;
         }
 
         pedidoDto = new PedidoDto(pedidoDto.idObject(), pedidoDto.id(), pedidoDto.itens(), pedidoDto.dataRecebimento(), "RECEBIDO");
         pedidoService.salvaPedido(pedidoDto);
 
-        logger.info("[recieveMessage]Mensagem processada: {0}", message.getPayload() );
+        logger.info("[recieveMessage]Mensagem processada: {}", message.getPayload() );
     }
 }
