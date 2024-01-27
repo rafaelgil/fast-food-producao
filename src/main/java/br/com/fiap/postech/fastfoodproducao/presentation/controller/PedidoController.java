@@ -43,7 +43,7 @@ public class PedidoController {
 
     @GetMapping("/{id}")
     public PedidoDto getPedido(@PathVariable UUID id) throws PedidoNotFoundException {
-        logger.info("[getPedido] id de pedido recebido: {0}", id);
+        logger.info("[getPedido] id de pedido recebido: {}", id);
         return pedidoService.consultaPedidoValido(id);
     }
 

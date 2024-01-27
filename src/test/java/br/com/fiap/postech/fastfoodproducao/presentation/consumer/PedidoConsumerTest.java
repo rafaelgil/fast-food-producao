@@ -1,6 +1,7 @@
 package br.com.fiap.postech.fastfoodproducao.presentation.consumer;
 
 import br.com.fiap.postech.fastfoodproducao.application.service.PedidoService;
+import br.com.fiap.postech.fastfoodproducao.application.sqs.consumer.PedidoConsumer;
 import br.com.fiap.postech.fastfoodproducao.dto.PedidoDto;
 import br.com.fiap.postech.fastfoodproducao.utils.PedidoHelper;
 import org.junit.jupiter.api.BeforeEach;
