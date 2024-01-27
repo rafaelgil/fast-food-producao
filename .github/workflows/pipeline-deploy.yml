@@ -97,7 +97,7 @@ jobs:
         run: chmod +x pom.xml
 
       - name: Package
-        run: mvn clean build --file pom.xml
+        run: mvn clean install --file pom.xml
 
       - name: Build, tag, and push image to Amazon ECR
         id: build-image
