@@ -152,6 +152,33 @@
 					</excludes>
 				</configuration>
 			</plugin>
+
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.7</version> <!-- Verifique a versão mais recente -->
+				<configuration>
+					<excludes>
+						<exclude>br/com/fiap/postech/fastfoodproducao/FastFoodProducaoApplication.class</exclude>
+						<exclude>br/com/fiap/postech/fastfoodproducao/infraestructure/*</exclude>
+						<exclude>br/com/fiap/postech/fastfoodproducao/data/entity/*</exclude>
+					</excludes>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 
