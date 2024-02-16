@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.cloud.aws.messaging.listener.annotation.SqsListener;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Service
 @RequiredArgsConstructor
 public class PedidoConsumer {
@@ -27,7 +29,7 @@ public class PedidoConsumer {
 
             logger.info("[recieveMessage]Mensagem recebida: {}", message );
 
-            /*var pedidoFound = pedidoService.consultaPedido(pedidoDto.id());
+            var pedidoFound = pedidoService.consultaPedido(pedidoDto.id());
             if (Objects.nonNull(pedidoFound)) {
                 logger.info("[recieveMessage]Pedido já existe: {}", pedidoFound.id());
                 return;
@@ -35,7 +37,7 @@ public class PedidoConsumer {
 
             pedidoDto = new PedidoDto(pedidoDto.idObject(), pedidoDto.id(), pedidoDto.itens(), pedidoDto.dataRecebimento(), "RECEBIDO");
 
-            pedidoService.salvaPedido(pedidoDto);*/
+            pedidoService.salvaPedido(pedidoDto);
 
             logger.info("[recieveMessage]Mensagem processada: {}", message );
         } catch (Exception e) {

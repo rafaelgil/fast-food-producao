@@ -42,9 +42,9 @@ public class PedidoConsumerTest {
         when(pedidoService.salvaPedido(any(PedidoDto.class)))
                 .thenReturn(PedidoHelper.mockPedidoEntity(pedido.id()));
 
-        GenericMessage<PedidoDto> message = new GenericMessage<>(pedido);
+        //GenericMessage<PedidoDto> message = new GenericMessage<>(pedido);
 
-        pedidoConsumer.recieveMessage(new ObjectMapper().writeValueAsString(message));
+        pedidoConsumer.recieveMessage(new ObjectMapper().writeValueAsString(pedido));
         verify(pedidoService, times(1)).consultaPedido(any(UUID.class));
         verify(pedidoService, times(1)).salvaPedido(any(PedidoDto.class));
     }
@@ -58,9 +58,9 @@ public class PedidoConsumerTest {
         when(pedidoService.salvaPedido(any(PedidoDto.class)))
                 .thenReturn(PedidoHelper.mockPedidoEntity(pedido.id()));
 
-        GenericMessage<PedidoDto> message = new GenericMessage<>(pedido);
+        //GenericMessage<PedidoDto> message = new GenericMessage<>(pedido);
 
-        pedidoConsumer.recieveMessage(new ObjectMapper().writeValueAsString(message));
+        pedidoConsumer.recieveMessage(new ObjectMapper().writeValueAsString(pedido));
         verify(pedidoService, times(1)).consultaPedido(any(UUID.class));
         verify(pedidoService, times(0)).salvaPedido(any(PedidoDto.class));
     }

@@ -14,7 +14,8 @@ import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInC
 
 public class PedidoStepDefinition {
 
-    private String ENDPOINT_PRODUCAO_PEDIDOS = "http://localhost:8080/producao/pedidos?page=0&size=5";
+    private String ENDPOINT_PRODUCAO_PEDIDOS = "http://localhost:8082/producao/pedidos?page=0&size=5";
+    private String ENDPOINT_PRODUCAO_PEDIDOS_DOIS = "http://localhost:8082/producao/pedidos";
 
     private Response response;
 
@@ -44,7 +45,7 @@ public class PedidoStepDefinition {
     @Quando("consulta pedido")
     public void consultaPedido() {
         response = when()
-                .get(ENDPOINT_PRODUCAO_PEDIDOS + "/{id}", pedidoDto.id());
+                .get(ENDPOINT_PRODUCAO_PEDIDOS_DOIS + "/{id}", pedidoDto.id());
     }
 
     @Entao("pedido é encontrado")
