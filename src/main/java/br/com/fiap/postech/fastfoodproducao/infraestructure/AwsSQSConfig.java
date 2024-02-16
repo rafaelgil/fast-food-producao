@@ -1,4 +1,4 @@
-package br.com.fiap.postech.fastfoodproducao.infraestructure;
+/*package br.com.fiap.postech.fastfoodproducao.infraestructure;
 
 import io.awspring.cloud.sqs.config.SqsMessageListenerContainerFactory;
 import io.awspring.cloud.sqs.listener.acknowledgement.AcknowledgementResultCallback;
@@ -68,4 +68,4 @@ public class AwsSQSConfig {
             LOGGER.error("Ack with fail", t);
         }
     }
-}
+}*/

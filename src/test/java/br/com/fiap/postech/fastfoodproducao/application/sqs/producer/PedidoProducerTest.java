@@ -3,12 +3,12 @@ package br.com.fiap.postech.fastfoodproducao.application.sqs.producer;
 import br.com.fiap.postech.fastfoodproducao.dto.PedidoDto;
 import br.com.fiap.postech.fastfoodproducao.utils.PedidoHelper;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import io.awspring.cloud.sqs.operations.SendResult;
-import io.awspring.cloud.sqs.operations.SqsTemplate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.cloud.aws.messaging.core.QueueMessagingTemplate;
+import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -23,7 +23,7 @@ public class PedidoProducerTest {
     AutoCloseable mock;
 
     @Mock
-    SqsTemplate sqsTemplate;
+    QueueMessagingTemplate sqsTemplate;
 
     PedidoProducer pedidoProducer;
 
@@ -40,11 +40,6 @@ public class PedidoProducerTest {
         var pedido = PedidoHelper.gerarPedido();
 
         GenericMessage<PedidoDto> message = new GenericMessage<>(pedido);
-
-        SendResult<PedidoDto> result = new SendResult<>(UUID.randomUUID(), "QUEUE_SEND_STATUS", message, null );
-
-        when(sqsTemplate.send(any(String.class), any(GenericMessage.class)))
-                .thenReturn(result);
 
         pedidoProducer.send(pedido);
 

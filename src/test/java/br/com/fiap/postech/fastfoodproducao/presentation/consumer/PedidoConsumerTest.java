@@ -4,6 +4,8 @@ import br.com.fiap.postech.fastfoodproducao.application.service.PedidoService;
 import br.com.fiap.postech.fastfoodproducao.application.sqs.consumer.PedidoConsumer;
 import br.com.fiap.postech.fastfoodproducao.dto.PedidoDto;
 import br.com.fiap.postech.fastfoodproducao.utils.PedidoHelper;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -28,11 +30,11 @@ public class PedidoConsumerTest {
     @BeforeEach
     void setup() {
         mock = MockitoAnnotations.openMocks(this);
-        this.pedidoConsumer = new PedidoConsumer(pedidoService);
+        this.pedidoConsumer = new PedidoConsumer(pedidoService, new ObjectMapper());
     }
 
     @Test
-    public void DeveReceberNovoPedidoComSucesso() {
+    public void DeveReceberNovoPedidoComSucesso() throws JsonProcessingException {
         var pedido = PedidoHelper.gerarPedido();
 
         when(pedidoService.consultaPedido(any(UUID.class)))
@@ -42,13 +44,13 @@ public class PedidoConsumerTest {
 
         GenericMessage<PedidoDto> message = new GenericMessage<>(pedido);
 
-        pedidoConsumer.recieveMessage(message);
+        pedidoConsumer.recieveMessage(new ObjectMapper().writeValueAsString(message));
         verify(pedidoService, times(1)).consultaPedido(any(UUID.class));
         verify(pedidoService, times(1)).salvaPedido(any(PedidoDto.class));
     }
 
     @Test
-    public void DeveReceberPedidoExistenteComSucesso() {
+    public void DeveReceberPedidoExistenteComSucesso() throws JsonProcessingException {
         var pedido = PedidoHelper.gerarPedido();
 
         when(pedidoService.consultaPedido(any(UUID.class)))
@@ -58,7 +60,7 @@ public class PedidoConsumerTest {
 
         GenericMessage<PedidoDto> message = new GenericMessage<>(pedido);
 
-        pedidoConsumer.recieveMessage(message);
+        pedidoConsumer.recieveMessage(new ObjectMapper().writeValueAsString(message));
         verify(pedidoService, times(1)).consultaPedido(any(UUID.class));
         verify(pedidoService, times(0)).salvaPedido(any(PedidoDto.class));
     }
