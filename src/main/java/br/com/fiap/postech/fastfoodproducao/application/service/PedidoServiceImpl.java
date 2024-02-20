@@ -36,7 +36,7 @@ public class PedidoServiceImpl implements PedidoService{
 
         pedidoRepository.save(pedidoEntity);
 
-        logger.info("[salvaPedido] ID Object Pedido: " + pedidoEntity.getIdObject());
+        logger.info("[salvaPedido] ID Object Pedido: " + pedidoEntity.getId());
         return pedidoEntity;
     }
 

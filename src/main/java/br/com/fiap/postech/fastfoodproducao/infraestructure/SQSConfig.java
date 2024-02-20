@@ -38,9 +38,12 @@ public class SQSConfig {
     @Primary
     @Bean(name = "amazonSQSAsync", destroyMethod = "shutdown")
     public AmazonSQSAsync amazonSQSAsync(
-            @Value("${spring.cloud.aws.region.static}") String region
+            @Value("${aws.cloud.end-point.uri}") String sqsEndpoint,
+            @Value("${aws.cloud.region.static}") String region
     ) {
-        String sqsEndpoint = getSqsEndpoint();
+
+        LOGGER.info("sqsEndpoint: {}", sqsEndpoint);
+
         return AmazonSQSAsyncClientBuilder
                 .standard()
                 .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(sqsEndpoint, region))
@@ -62,17 +65,5 @@ public class SQSConfig {
         list.add(resolver);
         queueMessageHandler.setArgumentResolvers(list);
         return queueMessageHandler;
-    }
-
-    private String getSqsEndpoint() {
-        String sqsEndpoint = secretsManagerClient.getSecretValue(buildSecretValueRequest("SQS_ENDPOINT")).secretString();
-        LOGGER.info("sqsEndpoint: {}", sqsEndpoint);
-        return sqsEndpoint;
-    }
-
-    private GetSecretValueRequest buildSecretValueRequest(String secretName) {
-        return GetSecretValueRequest.builder()
-                .secretId(secretName)
-                .build();
     }
 }

@@ -21,16 +21,14 @@ public class PedidoHelper {
             return PedidoDto.fromEntity(pedido);
         }
 
-        return new PedidoDto("123456", UUID.fromString(idPedido), null, LocalDateTime.now(), StatusPedido.RECEBIDO.getStatus());
+        return new PedidoDto(UUID.fromString(idPedido), null, StatusPedido.EM_PREPARACAO.getStatus());
     }
 
     public static PedidoDto gerarPedido() {
         return new PedidoDto(
-                "123654789",
                 UUID.randomUUID(),
                 null,
-                LocalDateTime.now(),
-                StatusPedido.RECEBIDO.name()
+                StatusPedido.EM_PREPARACAO.name()
         );
     }
 
@@ -38,7 +36,7 @@ public class PedidoHelper {
         return PedidoEntity.builder()
                 .id("12345678")
                 .id(id.toString())
-                .status(StatusPedido.RECEBIDO.name())
+                .status(StatusPedido.EM_PREPARACAO.name())
                 .build();
     }
 }

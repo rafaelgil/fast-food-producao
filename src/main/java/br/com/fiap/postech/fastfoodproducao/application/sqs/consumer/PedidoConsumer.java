@@ -29,20 +29,24 @@ public class PedidoConsumer {
 
             logger.info("[recieveMessage]Mensagem recebida: {}", message );
 
-            var pedidoFound = pedidoService.consultaPedido(pedidoDto.id());
-            if (Objects.nonNull(pedidoFound)) {
-                logger.info("[recieveMessage]Pedido já existe: {}", pedidoFound.id());
-                return;
-            }
+            if (pedidoExisteEmProducao(pedidoDto)) return;
 
-            pedidoDto = new PedidoDto(pedidoDto.idObject(), pedidoDto.id(), pedidoDto.itens(), pedidoDto.dataRecebimento(), "RECEBIDO");
-
-            pedidoService.salvaPedido(pedidoDto);
+            pedidoService.salvaPedido(new PedidoDto(pedidoDto.id(), pedidoDto.itens(), "EM_PREPARACAO"));
 
             logger.info("[recieveMessage]Mensagem processada: {}", message );
         } catch (Exception e) {
             logger.error("[recieveMessage]Erro ao processar mensagem: {}", e.getMessage());
         }
 
+    }
+
+    private boolean pedidoExisteEmProducao(PedidoDto pedidoDto) {
+        var pedidoFound = pedidoService.consultaPedido(pedidoDto.id());
+
+        if (Objects.nonNull(pedidoFound)) {
+            logger.info("[recieveMessage]Pedido já existe na fila de producao: {}", pedidoFound.id());
+            return true;
+        }
+        return false;
     }
 }

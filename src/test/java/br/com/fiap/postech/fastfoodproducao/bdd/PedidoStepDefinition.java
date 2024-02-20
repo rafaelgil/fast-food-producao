@@ -1,6 +1,8 @@
 package br.com.fiap.postech.fastfoodproducao.bdd;
 
 import br.com.fiap.postech.fastfoodproducao.dto.PedidoDto;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.cucumber.java.pt.Dado;
 import io.cucumber.java.pt.Entao;
 import io.cucumber.java.pt.Quando;
@@ -15,7 +17,6 @@ import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInC
 public class PedidoStepDefinition {
 
     private String ENDPOINT_PRODUCAO_PEDIDOS = "http://localhost:8082/producao/pedidos?page=0&size=5";
-    private String ENDPOINT_PRODUCAO_PEDIDOS_DOIS = "http://localhost:8082/producao/pedidos";
 
     private Response response;
 
@@ -36,16 +37,16 @@ public class PedidoStepDefinition {
 
 
     @Dado("que o pedido existe")
-    public void pedidoExiste() {
+    public void pedidoExiste() throws JsonProcessingException {
         listarTodosOsPedidos();
-        var pedidos = response.then().extract().as(String.class);
+        var pedidos = new ObjectMapper().writeValueAsString(response.then().extract().as(Object.class));
 //        pedidoDto = (PedidoDto) pedidos.get(0);
     }
 
     @Quando("consulta pedido")
     public void consultaPedido() {
         response = when()
-                .get(ENDPOINT_PRODUCAO_PEDIDOS_DOIS + "/{id}", pedidoDto.id());
+                .get(ENDPOINT_PRODUCAO_PEDIDOS + "/{id}", pedidoDto.id());
     }
 
     @Entao("pedido é encontrado")

@@ -90,7 +90,7 @@ class PedidoServiceTest {
                 .isInstanceOf(PedidoDto.class)
                 .isNotNull();
 
-        assertThat(pedidoEncontrado.status()).isEqualTo(StatusPedido.RECEBIDO.name());
+        assertThat(pedidoEncontrado.status()).isEqualTo(StatusPedido.EM_PREPARACAO.name());
     }
 
     @Test
@@ -118,7 +118,7 @@ class PedidoServiceTest {
                 .isInstanceOf(PedidoDto.class)
                 .isNotNull();
 
-        assertThat(pedidoEncontrado.status()).isEqualTo(StatusPedido.RECEBIDO.name());
+        assertThat(pedidoEncontrado.status()).isEqualTo(StatusPedido.EM_PREPARACAO.name());
     }
 
     @Test
@@ -164,7 +164,7 @@ class PedidoServiceTest {
 
         var paginador = PageRequest.of(1,5);
 
-        var pedidosResultado = pedidoService.listaPedidosPorStatus(StatusPedido.RECEBIDO.getStatus(), paginador);
+        var pedidosResultado = pedidoService.listaPedidosPorStatus(StatusPedido.EM_PREPARACAO.getStatus(), paginador);
 
         assertThat(pedidosResultado).size().isEqualTo(3);
     }
@@ -175,12 +175,12 @@ class PedidoServiceTest {
         when(pedidoRepository.findByIdPedido(any(UUID.class)))
                 .thenReturn(pedidoEntity);
 
-        var dto = pedidoService.atualizaStatusPedido(UUID.fromString(pedidoEntity.getId()), StatusPedido.EM_PREPARACAO.name());
+        var dto = pedidoService.atualizaStatusPedido(UUID.fromString(pedidoEntity.getId()), StatusPedido.PRONTO.name());
 
         assertThat(dto)
                 .isInstanceOf(PedidoDto.class)
                 .isNotNull();
-        assertThat(dto.status()).isEqualTo(StatusPedido.EM_PREPARACAO.name());
+        assertThat(dto.status()).isEqualTo(StatusPedido.PRONTO.name());
     }
 
     @Test
@@ -199,7 +199,7 @@ class PedidoServiceTest {
         when(pedidoRepository.findByIdPedido(any(UUID.class)))
                 .thenReturn(pedidoEntity);
 
-        assertThatThrownBy(() -> pedidoService.atualizaStatusPedido(UUID.fromString(pedidoEntity.getId()), StatusPedido.FINALIZADO.name()))
+        assertThatThrownBy(() -> pedidoService.atualizaStatusPedido(UUID.fromString(pedidoEntity.getId()), StatusPedido.EM_PREPARACAO.name()))
                 .isInstanceOf(InvalidStatusException.class);
     }
 
@@ -218,11 +218,9 @@ class PedidoServiceTest {
         );
 
         return new PedidoDto(
-                "123654789",
                 UUID.randomUUID(),
                 Arrays.asList(item),
-                LocalDateTime.now(),
-                StatusPedido.RECEBIDO.name()
+                StatusPedido.EM_PREPARACAO.name()
         );
     }
 
@@ -230,7 +228,7 @@ class PedidoServiceTest {
         return PedidoEntity.builder()
                 .id("12345678")
                 .id(id.toString())
-                .status(StatusPedido.RECEBIDO.name())
+                .status(StatusPedido.EM_PREPARACAO.name())
                 .build();
     }
 }
