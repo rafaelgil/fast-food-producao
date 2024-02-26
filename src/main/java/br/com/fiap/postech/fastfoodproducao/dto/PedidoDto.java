@@ -13,40 +13,30 @@ import java.util.List;
 import java.util.UUID;
 
 public record PedidoDto(
-        String idObject,
         UUID id,
         List<ItemPedidoDto> itens,
-        @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-        @JsonSerialize(using = LocalDateTimeSerializer.class)
-        LocalDateTime dataRecebimento,
         String status
 ) {
     public static PedidoDto fromEntity(PedidoEntity entity) {
         return new PedidoDto(
-                entity.getIdObject(),
                 UUID.fromString(entity.getId()),
                 getItensDto(entity.getItens()),
-                entity.getData(),
                 entity.getStatus()
         );
     }
 
     public PedidoDto updateStatus(String newStatus) {
         return new PedidoDto(
-                idObject,
                 id,
                 itens,
-                dataRecebimento,
                 newStatus
         );
     }
 
     public PedidoEntity toEntity() {
         return PedidoEntity.builder()
-                .idObject(idObject)
                 .id(id.toString())
                 .itens(getItensEntity())
-                .data(dataRecebimento)
                 .status(status)
                 .build();
     }

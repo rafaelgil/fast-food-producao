@@ -2,12 +2,6 @@ package br.com.fiap.postech.fastfoodproducao.application;
 
 public enum StatusPedido {
 
-    RECEBIDO("Pedido Recebido") {
-        @Override
-        public StatusPedido avancaPedido() {
-            return EM_PREPARACAO;
-        }
-    },
     EM_PREPARACAO("Em preparação") {
         @Override
         public StatusPedido avancaPedido() {
@@ -15,12 +9,6 @@ public enum StatusPedido {
         }
     },
     PRONTO("Pronto") {
-        @Override
-        public StatusPedido avancaPedido() {
-            return FINALIZADO;
-        }
-    },
-    FINALIZADO("Finalizado") {
         @Override
         public StatusPedido avancaPedido() {
             return this;

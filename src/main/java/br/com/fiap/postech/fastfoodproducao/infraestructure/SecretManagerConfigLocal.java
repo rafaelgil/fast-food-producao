@@ -1,0 +1,23 @@
+package br.com.fiap.postech.fastfoodproducao.infraestructure;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
+import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
+import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.secretsmanager.SecretsManagerClient;
+import java.net.URI;
+
+@Configuration
+@Profile("local")
+public class SecretManagerConfigLocal {
+
+    @Bean
+    public SecretsManagerClient getSecretsManagerClient() {
+        return SecretsManagerClient.builder()
+                .endpointOverride(URI.create("http://localhost:4566"))
+                .region(Region.US_EAST_1)
+                .credentialsProvider(() -> AwsBasicCredentials.create("localstack", "localstack"))
+                .build();
+    }
+}
