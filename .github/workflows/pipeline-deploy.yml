@@ -1,9 +1,9 @@
 name: Pipeline DEPLOY
 
-on:
-  push:
-    branches:
-      - main
+#on:
+#  push:
+#    branches:
+#      - main
 
 env:
   AWS_REGION: ${{secrets.AWS_DEFAULT_REGION}}
