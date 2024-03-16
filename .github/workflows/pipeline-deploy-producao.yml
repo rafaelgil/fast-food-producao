@@ -26,9 +26,9 @@ jobs:
         with:
           java-version: 17
       - name: Change wrapper permissions
-        run: chmod +x ./gradlew
+        run: chmod +x pom.xml
       - name: Package
-        run: ./gradlew clean build -x test
+        run: mvn -B package --file pom.xml
 
   test:
     needs: build
@@ -42,9 +42,9 @@ jobs:
         with:
           java-version: 17
       - name: Change wrapper permissions
-        run: chmod +x ./gradlew
+        run: chmod +x pom.xml
       - name: Package
-        run: ./gradlew test
+        run: mvn -B package --file pom.xml
 
   deploy:
     needs: test
@@ -72,10 +72,10 @@ jobs:
           java-version: 17
 
       - name: Change wrapper permissions
-        run: chmod +x ./gradlew
+        run: chmod +x pom.xml
 
       - name: Package
-        run: ./gradlew clean build -x test
+        run: mvn clean install -Dmaven.test.skip --file pom.xml
 
       - name: Build, tag, and push image to Amazon ECR
         id: build-image
